@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <td>Tytuł</td>
+        <td>Szczegóły</td>
+        <td>Edytuj</td>
+        <td>Usuń</td>
+    </tr>
+    {% for todo in todos %}
+        <tr>
+            <td>{{ todo.title }}</td>
+            <td><a href="{{  path('details', {'id' : todo.id}) }}">Zobacz</a></td>
+            <td><a href="#">Edytuj</a></td>
+            <td><a href="#">Usuń</a></td>
+        </tr>
+    {% endfor %}
+</table>
