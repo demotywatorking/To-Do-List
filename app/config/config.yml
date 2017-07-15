@@ -38,6 +38,8 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     cache: false
+    form_themes:
+        - "bootstrap_3_horizontal_layout.html.twig"
 
 # Doctrine Configuration
 doctrine:

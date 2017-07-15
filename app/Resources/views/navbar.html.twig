@@ -7,7 +7,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ path('homepage') }}">Lista zadań</a>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <a class="navbar-brand" href="{{ path('all') }}">Lista zadań</a>
+            <a class="navbar-brand" href="{{ path('add') }}">Dodaj</a>
+            {% endif %}
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">

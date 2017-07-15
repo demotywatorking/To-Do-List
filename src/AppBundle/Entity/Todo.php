@@ -26,7 +26,9 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Nie można stworzyć zadania bez tytułu"
+     * )
      */
     private $title;
 
@@ -44,7 +46,10 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="content", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Nie można stworzyć zadania bez szczegółów"
+     * )
+     *
      */
     private $content;
 
@@ -64,7 +69,9 @@ class Todo
      * @ORM\Column(name="priority", type="integer")
      * @ORM\OneToOne(targetEntity="AppBundle:Priority")
      * @ORM\JoinColumn(name="priority", referencedColumnName="priority")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Musi być ustawiony priorytet zadania"
+     * )
      */
     private $priority;
 
@@ -72,7 +79,9 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="dueDate", type="datetime")
-     * @Assert\DateTime()
+     * @Assert\DateTime(
+     *     message = "Nieprawddłowy format daty lub godziny"
+     * )
      */
     private $dueDate;
 

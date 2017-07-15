@@ -13,7 +13,6 @@ use AppBundle\Entity\Todo;
 use AppBundle\Form\TodoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class TodoController extends Controller
 {
     /**
-     * @Route("/todo/all", name="show_all")
+     * @Route("/todo/all", name="all")
      */
     public function allAction()
     {

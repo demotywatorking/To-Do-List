@@ -23,9 +23,13 @@ class TodoType extends AbstractType
             ->add('content', Type\TextareaType::class)
             //->add('priority', Type\ChoiceType::class, $this->priority )
             ->add('category')
-            ->add('dueDate', Type\DateTimeType::class)
-            ->add('save', Type\SubmitType::class)
-        ;
+            ->add('dueDate', Type\DateTimeType::class, [
+                'widget' => 'single_text',
+                'attr' => ['class' => 'js-datepicker'],
+                'html5' => false,
+            ]);
+           // ->add('save', Type\SubmitType::class)
+        //;
     }
 
 }
