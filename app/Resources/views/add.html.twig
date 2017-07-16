@@ -13,23 +13,38 @@
     </script>
 {% endblock %}
 {% block body %}
-    <div class="form-group">
-        {{ form_start(form) }}
-            {{ form_errors(form) }}
-            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder' : 'Tytuł'}}) }}
-            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder' : 'Zawartość'}}) }}
-            <label for="todo_priority">Priorytet:</label>
-            {{ form_widget(form.priority, {'attr': {'class': 'form-control' } }) }}
-            {# form_row(form.content) #}
-            {# form_row(form.priority) #}
-            <label for="todo_dueDate">Termin Wykonania:</label>
-            <div style="position: relative">
-                {{ form_widget(form.dueDate) }}
+
+    <div class="row">
+        <div class="panel panel-success">
+            <div class="panel-heading">{{ title }}</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder' : 'Tytuł'}}) }}
+                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder' : 'Zawartość'}}) }}
+                    <label for="todo_priority">Priorytet:</label>
+                    {{ form_widget(form.priority, {'attr': {'class': 'form-control' } }) }}
+                    {# form_row(form.content) #}
+                    {# form_row(form.priority) #}
+                    <label for="todo_dueDate">Termin Wykonania:</label>
+                    <div style="position: relative">
+                        {{ form_widget(form.dueDate) }}
+                    </div>
+                    {# form_row(form.dueDate) #}
+                    <button type="submit" class="btn btn-primary">
+                        {% if title == 'Dodaj zadanie' %}
+                            Dodaj
+                        {% else %}
+                            Edytuj
+                        {% endif %}
+                    </button>
+                    {{ form_end(form) }}
+                </div>
             </div>
-            {# form_row(form.dueDate) #}
-            <label for="todo_category">Kategoria:</label>
-            {{ form_widget(form.category) }}
-            <button type="submit" class="btn btn-primary">Dodaj</button>
-        {{ form_end(form) }}
+            <div class="panel-footer">
+                <a href="{{ path('all') }}" class="btn btn-info" type="button">Anuluj</a>
+            </div>
+        </div>
     </div>
 {% endblock %}

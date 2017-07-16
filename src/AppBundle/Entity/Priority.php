@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +16,12 @@ class Priority
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="priority_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private $priorityId;
+
 
     /**
      * @var string
@@ -28,17 +30,19 @@ class Priority
      */
     private $priority;
 
-
     /**
-     * Get id
-     *
-     * @return int
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="priorityDatabase")
      */
-    public function getId()
+    protected $todos;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->todos = new ArrayCollection();
     }
 
+    public function setPriorityId($id) {
+        $this->priorityId = $id;
+    }
     /**
      * Set priority
      *
@@ -61,5 +65,49 @@ class Priority
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Get priorityId
+     *
+     * @return integer
+     */
+    public function getPriorityId()
+    {
+        return $this->priorityId;
+    }
+
+    /**
+     * Add todo
+     *
+     * @param \AppBundle\Entity\Todo $todo
+     *
+     * @return Priority
+     */
+    public function addTodo(\AppBundle\Entity\Todo $todo)
+    {
+        $this->todos[] = $todo;
+
+        return $this;
+    }
+
+    /**
+     * Remove todo
+     *
+     * @param \AppBundle\Entity\Todo $todo
+     */
+    public function removeTodo(\AppBundle\Entity\Todo $todo)
+    {
+        $this->todos->removeElement($todo);
+    }
+
+    /**
+     * Get todos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTodos()
+    {
+        return $this->todos;
     }
 }

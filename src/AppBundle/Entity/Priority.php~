@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +16,12 @@ class Priority
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="priority_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private $priorityId;
+
 
     /**
      * @var string
@@ -28,15 +30,14 @@ class Priority
      */
     private $priority;
 
-
     /**
-     * Get id
-     *
-     * @return int
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="priorityDatabase")
      */
-    public function getId()
+    protected $todos;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->todos = new ArrayCollection();
     }
 
     /**
@@ -62,5 +63,14 @@ class Priority
     {
         return $this->priority;
     }
-}
 
+    /**
+     * Get priorityId
+     *
+     * @return integer
+     */
+    public function getPriorityId()
+    {
+        return $this->priorityId;
+    }
+}

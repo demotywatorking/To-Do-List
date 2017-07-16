@@ -1,16 +1,37 @@
-<table>
-    <tr>
-        <td>Tytuł</td>
-        <td>Szczegóły</td>
-        <td>Edytuj</td>
-        <td>Usuń</td>
-    </tr>
-    {% for todo in todos %}
-        <tr>
-            <td>{{ todo.title }}</td>
-            <td><a href="{{  path('details', {'id' : todo.id}) }}">Zobacz</a></td>
-            <td><a href="#">Edytuj</a></td>
-            <td><a href="#">Usuń</a></td>
-        </tr>
-    {% endfor %}
-</table>
+{% extends "::base.html.twig" %}
+{% block body %}
+    {% if todos %}
+        {% for todo in todos %}
+            {% if(todo.done) %}
+                <div class="row bg-success">
+            {% else %}
+                <div class="row bg-warning">
+            {% endif %}
+                <div class="col-xs-3">
+                    {{ todo.title }}
+                </div>
+                <div class="col-xs-2">
+                    {{  todo.priority }}
+                </div>
+                <div class="col-xs-3">
+                    {{ todo.dueDate|date }}
+                </div>
+                <div class="col-xs-4">
+                    <div class="btn-group" role="group">
+                        <a href="{{ path('details', {'id' : todo.id}) }}" class="btn btn-primary" type="button">Zobacz</a>
+                        <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">Edytuj</a>
+                        <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">Usuń</a>
+                        {% if(todo.done == 0) %}
+                            <a href="#" class="btn btn-success" type="button">Oznacz jako wykonane</a>
+                        {% else %}
+                            <button class="btn btn-default" type="button">Zrobione</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-danger">Nie utworzono żadnych zadań</div>
+        <a href="{{ path("add") }}" class="btn btn-info">Utwórz nowe zadanie teraz</a>
+    {% endif %}
+{% endblock %}

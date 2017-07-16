@@ -54,27 +54,30 @@ class Todo
     private $content;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="category", type="integer")
-     * @Assert\NotBlank(
-     *     message = "To pole nie może być puste"
-     * )
-     */
-    private $category;
-
-    /**
      * @var string
-     *
      * @ORM\Column(name="priority", type="integer")
-     * @ORM\OneToOne(targetEntity="AppBundle:Priority")
-     * @ORM\JoinColumn(name="priority", referencedColumnName="priority")
      * @Assert\NotBlank(
-     *     message = "Musi być ustawiony priorytet zadania"
+     * message = "Musi być ustawiony priorytet zadania"
      * )
+     *
      */
     private $priority;
 
+    /**
+     * @return mixed
+     */
+    public function getPriorityDatabase()
+    {
+        return $this->priorityDatabase;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Priority", inversedBy="todos")
+     * @ORM\JoinColumn(name="priority", referencedColumnName="priority_id")
+     */
+    private $priorityDatabase;
     /**
      * @var string
      *
@@ -84,6 +87,15 @@ class Todo
      * )
      */
     private $dueDate;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="done", type="boolean")
+     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\LessThanOrEqual(1)
+     */
+    private $done;
 
 
     /**
@@ -142,30 +154,6 @@ class Todo
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Set category
-     *
-     * @param integer $category
-     *
-     * @return Todo
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return int
-     */
-    public function getCategory()
-    {
-        return $this->category;
     }
 
     /**
@@ -238,5 +226,43 @@ class Todo
     public function getDueDate()
     {
         return $this->dueDate;
+    }
+
+    /**
+     * Set done
+     *
+     * @param boolean $done
+     *
+     * @return Todo
+     */
+    public function setDone($done)
+    {
+        $this->done = $done;
+
+        return $this;
+    }
+
+    /**
+     * Get done
+     *
+     * @return boolean
+     */
+    public function getDone()
+    {
+        return $this->done;
+    }
+
+    /**
+     * Set priorityDatabase
+     *
+     * @param \AppBundle\Entity\Priority $priorityDatabase
+     *
+     * @return Todo
+     */
+    public function setPriorityDatabase(\AppBundle\Entity\Priority $priorityDatabase = null)
+    {
+        $this->priorityDatabase = $priorityDatabase;
+
+        return $this;
     }
 }

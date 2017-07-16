@@ -26,7 +26,9 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Nie można stworzyć zadania bez tytułu"
+     * )
      */
     private $title;
 
@@ -34,7 +36,7 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="userid", type="integer")
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\OneToOne(targetEntity="AppBundle:User")
      * @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -44,33 +46,56 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="content", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Nie można stworzyć zadania bez szczegółów"
+     * )
+     *
      */
     private $content;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="category", type="integer")
-     * @Assert\NotBlank()
-     */
-    private $category;
-
-    /**
      * @var string
-     *
      * @ORM\Column(name="priority", type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     * message = "Musi być ustawiony priorytet zadania"
+     * )
+     *
      */
     private $priority;
 
     /**
+     * @return mixed
+     */
+    public function getPriorityDatabase()
+    {
+        return $this->priorityDatabase;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Priority", inversedBy="todos")
+     * @ORM\JoinColumn(name="priority", referencedColumnName="priority_id")
+     */
+    private $priorityDatabase;
+    /**
      * @var string
      *
      * @ORM\Column(name="dueDate", type="datetime")
-     * @Assert\DateTime()
+     * @Assert\DateTime(
+     *     message = "Nieprawddłowy format daty lub godziny"
+     * )
      */
     private $dueDate;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="done", type="boolean")
+     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\LessThanOrEqual(1)
+     */
+    private $done;
 
 
     /**
@@ -132,30 +157,6 @@ class Todo
     }
 
     /**
-     * Set category
-     *
-     * @param integer $category
-     *
-     * @return Todo
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return int
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
      * Set priority
      *
      * @param string $priority
@@ -201,5 +202,53 @@ class Todo
     public function getUserId()
     {
         return $this->UserId;
+    }
+
+    /**
+     * Set dueDate
+     *
+     * @param \DateTime $dueDate
+     *
+     * @return Todo
+     */
+    public function setDueDate($dueDate)
+    {
+        $this->dueDate = $dueDate;
+
+        return $this;
+    }
+
+    /**
+     * Get dueDate
+     *
+     * @return \DateTime
+     */
+    public function getDueDate()
+    {
+        return $this->dueDate;
+    }
+
+    /**
+     * Set done
+     *
+     * @param boolean $done
+     *
+     * @return Todo
+     */
+    public function setDone($done)
+    {
+        $this->done = $done;
+
+        return $this;
+    }
+
+    /**
+     * Get done
+     *
+     * @return boolean
+     */
+    public function getDone()
+    {
+        return $this->done;
     }
 }

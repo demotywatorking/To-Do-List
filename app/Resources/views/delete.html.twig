@@ -1,0 +1,18 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+    {% if app.session.flashBag.has('success') %}
+        <div class="alert alert-success">
+            {% for msg in app.session.flashBag.get('success') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if app.session.flashBag.has('warning') %}
+        <div class="alert alert-warning">
+            {% for msg in app.session.flashBag.get('warning') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <a href="{{ path("all") }}" class="btn btn-info">Powrót do listy zadań</a>
+{% endblock %}
