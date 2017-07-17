@@ -1,4 +1,5 @@
 {% extends"::base.html.twig" %}
+{% trans_default_domain 'app' %}
 {% block stylesheets %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css" />
 {% endblock %}
@@ -16,34 +17,34 @@
 
     <div class="row">
         <div class="panel panel-success">
-            <div class="panel-heading">{{ title }}</div>
+            <div class="panel-heading">{{ title|trans }}</div>
             <div class="panel-body">
                 <div class="form-group">
                     {{ form_start(form) }}
                     {{ form_errors(form) }}
-                    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder' : 'Tytuł'}}) }}
-                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder' : 'Zawartość'}}) }}
-                    <label for="todo_priority">Priorytet:</label>
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control margin-bottom', 'placeholder' : 'add.title.title'|trans({}, 'app')}}) }}
+                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder' :  'add.details'|trans() }}) }}
+                    <label for="todo_priority">{{ 'add.priority'|trans({}, 'app') }}:</label>
                     {{ form_widget(form.priority, {'attr': {'class': 'form-control' } }) }}
                     {# form_row(form.content) #}
                     {# form_row(form.priority) #}
-                    <label for="todo_dueDate">Termin Wykonania:</label>
-                    <div style="position: relative">
+                    <label for="todo_dueDate">{{ 'add.due'|trans() }}:</label>
+                    <div style="position: relative" class="margin-bottom">
                         {{ form_widget(form.dueDate) }}
                     </div>
                     {# form_row(form.dueDate) #}
                     <button type="submit" class="btn btn-primary">
-                        {% if title == 'Dodaj zadanie' %}
-                            Dodaj
+                        {% if title == 'add.title.header' %}
+                            {{ 'add.add'|trans() }}
                         {% else %}
-                            Edytuj
+                            {{ 'add.edit'|trans() }}
                         {% endif %}
                     </button>
                     {{ form_end(form) }}
                 </div>
             </div>
             <div class="panel-footer">
-                <a href="{{ path('all') }}" class="btn btn-info" type="button">Anuluj</a>
+                <a href="{{ path('all') }}" class="btn btn-info" type="button">{{ 'add.cancel'|trans() }}</a>
             </div>
         </div>
     </div>

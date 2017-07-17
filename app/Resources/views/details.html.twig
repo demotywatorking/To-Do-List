@@ -1,10 +1,10 @@
 {% extends "::base.html.twig" %}
-
+{% trans_default_domain 'app' %}
 {% block body %}
     {% if app.session.flashBag.has('success') %}
         <div class="alert alert-success">
             {% for msg in app.session.flashBag.get('success') %}
-                {{ msg }}
+                {{ msg|trans() }}
             {% endfor %}
         </div>
     {% endif %}
@@ -13,25 +13,25 @@
             <div class="panel panel-success">
                 <div class="panel-heading">{{ todo.title }}</div>
                 <div class="panel-body">
-                    <h4>Szczegóły:</h4>
+                    <h4>{{ 'details.details'|trans() }}:</h4>
                     <div class="well">{{ todo.content }}</div>
-                    <h4>Data wykonania:</h4>
+                    <h4>{{ 'details.due'|trans() }}:</h4>
                     <div class="well">{{ todo.dueDate|date }}</div>
                 </div>
                 <div class="panel-footer">
                     <div class="btn-group">
-                        <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">Edytuj</a>
-                        <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">Usuń</a>
+                        <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">{{ 'details.edit'|trans() }}</a>
+                        <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">{{ 'details.delete'|trans() }}</a>
                         {% if(todo.done == 0) %}
-                            <a href="#" class="btn btn-success" type="button">Oznacz jako wykonane</a>
+                            <a href="{{ path('done', {'id' : todo.id}) }}" class="btn btn-success" type="button">{{ 'details.set'|trans() }}</a>
                         {% else %}
-                            <button class="btn btn-default" type="button">Zrobione</button>
+                            <button class="btn btn-default" type="button">{{ 'details.done'|trans() }}</button>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     {% else %}
-        <div class="alert alert-danger">Zadanie nieznalezione lub usunięte.</div>
+        <div class="alert alert-danger">{{ 'details.notfound'|trans() }}</div>
     {% endif %}
 {% endblock %}

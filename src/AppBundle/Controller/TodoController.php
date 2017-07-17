@@ -62,7 +62,7 @@ class TodoController extends Controller
             $em->flush();
             $request->getSession()
                 ->getFlashBag()
-                ->add('success', 'Z powodzeniem utworzono zadanie.')
+                ->add('success', 'add.success')
             ;
             return $this->redirectToRoute('details', [
                 'id' => $task->getId()
@@ -70,7 +70,7 @@ class TodoController extends Controller
         }
 
         return $this->render('add.html.twig', [
-            'title' => 'Dodaj zadanie',
+            'title' => 'add.title.header',
             'form' => $form->createView(),
         ]);
     }
@@ -87,6 +87,11 @@ class TodoController extends Controller
                 'UserId' => $userId,
                 'id' => $id,
         ]);
+        if (!$todo) {
+            return $this->render('details.html.twig', [
+                'todo' => ''
+            ]);
+        }
         return $this->render('details.html.twig', [
             'todo' => $todo,
             'priority' => $todo->getPriorityDatabase()->getPriority()
@@ -124,7 +129,7 @@ class TodoController extends Controller
         }
 
         return $this->render('add.html.twig', [
-            'title' => 'Edytuj zadanie',
+            'title' => 'add.title.edit',
             'form' => $form->createView()
         ]);
     }
@@ -147,17 +152,47 @@ class TodoController extends Controller
             $em->flush();
             $request->getSession()
                 ->getFlashBag()
-                ->add('success', 'Z powodzeniem usunięto zadanie.')
+                ->add('success', 'delete.success')
             ;
         } else {
             $request->getSession()
                 ->getFlashBag()
-                ->add('warning', 'Nie znaleziono zadania.')
+                ->add('warning', 'delete.warning')
             ;
         }
         return $this->render('delete.html.twig');
     }
 
+    /**
+     * @Route("/todo/done/{id}", name="done")
+     */
+    public function doneAction($id, Request $request)
+    {
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $toDone = $em->getRepository('AppBundle:Todo')
+            ->findOneBy([
+                'id' => $id,
+                'UserId' => $userId
+        ]);
+        if ($toDone) {
+            $toDone->setDone(1);
+            $em->persist($toDone);
+            $em->flush();
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'done.success')
+            ;
+        } else {
+            $request->getSession()
+                ->getFlashBag()
+                ->add('warning', 'done.warning')
+            ;
+        }
+        return $this->render('done.html.twig', [
+            'id' => $id
+        ]);
+    }
     private function addChoicesToForm()
     {
         $priority = $this->getDoctrine()
@@ -171,4 +206,35 @@ class TodoController extends Controller
         }
         return $return;
     }
+
 }
+/*
+ * ALL WITHOUT TABLE
+{% if(todo.done) %}
+                            <div class="row bg-success margin-bottom">
+                        {% else %}
+                            <div class="row bg-warning margin-bottom">
+                        {% endif %}
+                            <div class="col-xs-2">
+                                {{ todo.title }}
+                            </div>
+                            <div class="col-xs-2">
+                                {{  todo.priority }}
+                            </div>
+                            <div class="col-xs-3">
+                                {{ todo.dueDate|date }}
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path('details', {'id' : todo.id}) }}" class="btn btn-primary" type="button">Zobacz</a>
+                                    <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">Edytuj</a>
+                                    <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">Usuń</a>
+                                    {% if(todo.done == 0) %}
+                                        <a href="{{ path('done', {'id' : todo.id}) }}" class="btn btn-success" type="button">Oznacz jako wykonane</a>
+                                    {% else %}
+                                        <button class="btn btn-default" type="button">Zrobione</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+*/

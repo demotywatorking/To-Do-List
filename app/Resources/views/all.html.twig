@@ -1,37 +1,55 @@
 {% extends "::base.html.twig" %}
+{% trans_default_domain 'app' %}
 {% block body %}
-    {% if todos %}
-        {% for todo in todos %}
-            {% if(todo.done) %}
-                <div class="row bg-success">
-            {% else %}
-                <div class="row bg-warning">
-            {% endif %}
-                <div class="col-xs-3">
-                    {{ todo.title }}
-                </div>
-                <div class="col-xs-2">
-                    {{  todo.priority }}
-                </div>
-                <div class="col-xs-3">
-                    {{ todo.dueDate|date }}
-                </div>
-                <div class="col-xs-4">
-                    <div class="btn-group" role="group">
-                        <a href="{{ path('details', {'id' : todo.id}) }}" class="btn btn-primary" type="button">Zobacz</a>
-                        <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">Edytuj</a>
-                        <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">Usuń</a>
-                        {% if(todo.done == 0) %}
-                            <a href="#" class="btn btn-success" type="button">Oznacz jako wykonane</a>
-                        {% else %}
-                            <button class="btn btn-default" type="button">Zrobione</button>
-                        {% endif %}
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            {{ 'all.title.header'|trans() }}
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                {% if todos %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{{ 'all.title.title'|trans() }}</th>
+                                <th>{{ 'all.priority'|trans() }}</th>
+                                <th>{{ 'all.due'|trans() }}</th>
+                                <th>Info</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                        {% for todo in todos %}
+                            {% if(todo.done) %}
+                                <tr class="bg-success">
+                            {% else %}
+                                <tr class="bg-warning">
+                            {% endif %}
+                                    <td>{{ todo.title }}</td>
+                                    <td>{{ todo.priority }}</td>
+                                    <td>{{ todo.dueDate|date("d.m.Y \\o g:i") }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{ path('details', {'id' : todo.id}) }}" class="btn btn-primary" type="button">{{ 'all.details'|trans() }}</a>
+                                            <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">{{ 'all.edit'|trans() }}</a>
+                                            <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">{{ 'all.delete'|trans() }}</a>
+                                            {% if(todo.done == 0) %}
+                                                <a href="{{ path('done', {'id' : todo.id}) }}" class="btn btn-success" type="button">{{ 'all.set'|trans() }}</a>
+                                            {% else %}
+                                                <button class="btn btn-default" type="button">{{ 'all.done'|trans() }}</button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                        {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                {% else %}
+                    <div class="alert alert-danger">{{ 'all.notask'|trans() }}</div>
+                    <a href="{{ path("add") }}" class="btn btn-info">{{ 'all.new'|trans() }}</a>
+                {% endif %}
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="alert alert-danger">Nie utworzono żadnych zadań</div>
-        <a href="{{ path("add") }}" class="btn btn-info">Utwórz nowe zadanie teraz</a>
-    {% endif %}
+        </div>
+    </div>
 {% endblock %}

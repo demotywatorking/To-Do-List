@@ -1,0 +1,45 @@
+done:
+    return: Powrót do szczegółów
+    success: Z powodzeniem ustawiono zadanie jako wykonane.
+    warning: Nie znaleziono zadania.
+navbar:
+    return: Powrót
+    add: Dodaj Zadanie
+    list: Lista zadań
+add:
+    title:
+        title: Tytuł
+        header: Dodaj zadanie
+        edit: Edytuj zadanie
+    details: Szczegóły
+    priority: Priorytet
+    due: Data wykonania
+    add: Dodaj
+    edit: Edytuj
+    cancel: Anuluj
+    success: Z powodzeniem utworzono zadanie.
+details:
+    details: Szczegóły
+    due: Data wykonania
+    edit: Edytuj
+    delete: Usuń
+    set: Ustaw jako wykonane
+    done: Wykonane
+    notfound: Zadanie nieznalezione lub usunięte.
+delete:
+    return: Powrót do listy zadań
+    success: Z powodzeniem usunięto zadanie.
+    warning: Nie znaleziono zadania.
+all:
+    title:
+        header: Lista zadań
+        title: Tytuł
+    priority: Priorytet
+    due: Data Wykonania
+    details: Szczegóły
+    edit: Edytuj
+    delete: Usuń
+    set: Oznacz jako wykonane
+    done: Zrobione
+    notask: Nie utworzono żadnych zadań
+    new: Utwórz nowe zadanie teraz

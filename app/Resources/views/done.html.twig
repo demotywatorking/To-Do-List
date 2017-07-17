@@ -1,19 +1,18 @@
 {% extends "::base.html.twig" %}
-{% trans_default_domain 'app' %}
 {% block body %}
     {% if app.session.flashBag.has('success') %}
         <div class="alert alert-success">
             {% for msg in app.session.flashBag.get('success') %}
-                {{ msg|trans() }}
+                {{ msg|trans({}, 'app') }}
             {% endfor %}
         </div>
     {% endif %}
     {% if app.session.flashBag.has('warning') %}
         <div class="alert alert-warning">
             {% for msg in app.session.flashBag.get('warning') %}
-                {{ msg|trans() }}
+                {{ msg|trans({}, 'app') }}
             {% endfor %}
         </div>
     {% endif %}
-    <a href="{{ path("all") }}" class="btn btn-info">{{ 'delete.return'|trans() }}</a>
+    <a href="{{ path("details", { 'id' : id}) }}" class="btn btn-info">{{  'done.return'|trans({}, 'app') }}</a>
 {% endblock %}

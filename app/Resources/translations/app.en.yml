@@ -1,0 +1,45 @@
+done:
+    return: Return to details
+    success: Successfully set the task as done.
+    warning: Task not found.
+navbar:
+    return: Return
+    add: Add Task
+    list: To-Do List
+add:
+    title:
+        title: Title
+        header: Add task
+        edit: Edit task
+    details: Details
+    priority: Priority
+    due: Due date
+    add: Add
+    edit: Edit
+    cancel: Cancel
+    success: Successfully created a task.
+details:
+    details: Details
+    due: Due Date
+    edit: Edit
+    delete: Delete
+    set: Set as done
+    done: Done
+    notfound: Task not found or deleted
+delete:
+    return: Return to to-do list
+    success: Successfully deleted a task.
+    warning: Task not found.
+all:
+    title:
+        header: To-do list
+        title: Title
+    priority: Priority
+    due: Due date
+    details: Details
+    edit: Edit
+    delete: Delete
+    set: Set as done
+    done: Done
+    notask: No tasks created
+    new: Add new task now
