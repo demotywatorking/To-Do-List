@@ -14,6 +14,14 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ 'navbar.language'|trans({}, 'app') }}
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="language" href="{{ path("setlang", {'_locale' : 'pl'}) }}">PL</a></li>
+                        <li><a class="language" href="{{ path("setlang", {'_locale' : 'en'}) }}">EN</a></li>
+                    </ul>
+                </li>
                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                     <li>
                         <a href="{{ path('homepage', {'_switch_user': '_exit'}) }}">{{ 'navbar.return'|trans({}, 'app') }}</a>

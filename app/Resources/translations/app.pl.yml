@@ -6,6 +6,7 @@ navbar:
     return: Powrót
     add: Dodaj Zadanie
     list: Lista zadań
+    language: Język
 add:
     title:
         title: Tytuł
@@ -26,11 +27,13 @@ details:
     set: Ustaw jako wykonane
     done: Wykonane
     notfound: Zadanie nieznalezione lub usunięte.
+    priority: Priorytet
 delete:
     return: Powrót do listy zadań
     success: Z powodzeniem usunięto zadanie.
     warning: Nie znaleziono zadania.
 all:
+    language: Poprawnie zmieniono język na polski.
     title:
         header: Lista zadań
         title: Tytuł

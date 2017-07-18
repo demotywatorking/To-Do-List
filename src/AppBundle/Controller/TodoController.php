@@ -22,8 +22,9 @@ class TodoController extends Controller
     /**
      * @Route("/todo", name="all")
      */
-    public function allAction()
+    public function allAction(Request $request)
     {
+        $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $todos = $em->getRepository('AppBundle:Todo')
@@ -32,7 +33,7 @@ class TodoController extends Controller
                 'dueDate' => "DESC"
         ]);
         foreach ($todos as $todo) {
-            $todo->setPriority($todo->getPriorityDatabase()->getPriority());
+            $todo->setPriority($todo->getPriorityDatabase()->{'getPriority'.$locale}());
         }
         return $this->render('all.html.twig',[
             'todos' => $todos
@@ -44,11 +45,12 @@ class TodoController extends Controller
      */
     public function addAction(Request $request)
     {
+        $locale = $request->getLocale();
         $task = new Todo();
         $task->setUserId($this->getUser()->getId());
         $task->setDone(0);
         $form = $this->createForm(TodoType::class, $task);
-        $form->add('priority', ChoiceType::class, [ 'choices' => $this->addChoicesToForm() ]);
+        $form->add('priority', ChoiceType::class, [ 'choices' => $this->addChoicesToForm($locale) ]);
 
         $form->handleRequest($request);
 
@@ -78,8 +80,9 @@ class TodoController extends Controller
     /**
      * @Route("/todo/details/{id}", name="details")
      */
-    public function detailsAction($id)
+    public function detailsAction($id, Request $request)
     {
+        $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
         $todo = $this->getDoctrine()
             ->getRepository('AppBundle:Todo')
@@ -94,7 +97,7 @@ class TodoController extends Controller
         }
         return $this->render('details.html.twig', [
             'todo' => $todo,
-            'priority' => $todo->getPriorityDatabase()->getPriority()
+            'priority' => $todo->getPriorityDatabase()->{'getPriority'.$locale}()
         ]);
     }
 
@@ -104,6 +107,7 @@ class TodoController extends Controller
      */
     public function editAction($id, Request $request)
     {
+        $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $todo = $em->getRepository('AppBundle:Todo')
@@ -112,7 +116,7 @@ class TodoController extends Controller
                 'id' => $id,
         ]);
         $form = $this->createForm(TodoType::class, $todo);
-        $form->add('priority', ChoiceType::class, [ 'choices' => $this->addChoicesToForm() ]);
+        $form->add('priority', ChoiceType::class, [ 'choices' => $this->addChoicesToForm($locale) ]);
 
         $form->handleRequest($request);
 
@@ -193,7 +197,20 @@ class TodoController extends Controller
             'id' => $id
         ]);
     }
-    private function addChoicesToForm()
+
+    /**
+     * @Route("/todo/setlang/{_locale}", requirements={"_locale" = "en|pl"}, name="setlang")
+     */
+    public function setLangAction(Request $request)
+    {
+        $request->getSession()
+            ->getFlashBag()
+            ->add('success', 'all.language')
+        ;
+        return $this->redirectToRoute("all");
+    }
+
+    private function addChoicesToForm($locale)
     {
         $priority = $this->getDoctrine()
             ->getRepository('AppBundle:Priority')
@@ -202,7 +219,7 @@ class TodoController extends Controller
             ]);
         $return = [];
         foreach ($priority as $value) {
-            $return[$value->getPriority()] = $value->getPriorityId();
+            $return[$value->{'getPriority'.$locale}()] = $value->getPriorityId();
         }
         return $return;
     }

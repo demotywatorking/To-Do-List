@@ -26,9 +26,16 @@ class Priority
     /**
      * @var string
      *
-     * @ORM\Column(name="priority", type="string", length=255, unique=true)
+     * @ORM\Column(name="priority_pl", type="string", length=255, unique=true)
      */
-    private $priority;
+    private $priorityPl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="priority_en", type="string", length=255, unique=true)
+     */
+    private $priorityEn;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="priorityDatabase")
@@ -42,29 +49,6 @@ class Priority
 
     public function setPriorityId($id) {
         $this->priorityId = $id;
-    }
-    /**
-     * Set priority
-     *
-     * @param string $priority
-     *
-     * @return Priority
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
-     * Get priority
-     *
-     * @return string
-     */
-    public function getPriority()
-    {
-        return $this->priority;
     }
 
     /**
@@ -109,5 +93,53 @@ class Priority
     public function getTodos()
     {
         return $this->todos;
+    }
+
+    /**
+     * Set priorityPl
+     *
+     * @param string $priorityPl
+     *
+     * @return Priority
+     */
+    public function setPriorityPl($priorityPl)
+    {
+        $this->priorityPl = $priorityPl;
+
+        return $this;
+    }
+
+    /**
+     * Get priorityPl
+     *
+     * @return string
+     */
+    public function getPriorityPl()
+    {
+        return $this->priorityPl;
+    }
+
+    /**
+     * Set priorityEn
+     *
+     * @param string $priorityEn
+     *
+     * @return Priority
+     */
+    public function setPriorityEn($priorityEn)
+    {
+        $this->priorityEn = $priorityEn;
+
+        return $this;
+    }
+
+    /**
+     * Get priorityEn
+     *
+     * @return string
+     */
+    public function getPriorityEn()
+    {
+        return $this->priorityEn;
     }
 }

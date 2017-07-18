@@ -251,4 +251,18 @@ class Todo
     {
         return $this->done;
     }
+
+    /**
+     * Set priorityDatabase
+     *
+     * @param \AppBundle\Entity\Priority $priorityDatabase
+     *
+     * @return Todo
+     */
+    public function setPriorityDatabase(\AppBundle\Entity\Priority $priorityDatabase = null)
+    {
+        $this->priorityDatabase = $priorityDatabase;
+
+        return $this;
+    }
 }

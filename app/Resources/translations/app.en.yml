@@ -6,6 +6,7 @@ navbar:
     return: Return
     add: Add Task
     list: To-Do List
+    language: Language
 add:
     title:
         title: Title
@@ -26,11 +27,13 @@ details:
     set: Set as done
     done: Done
     notfound: Task not found or deleted
+    priority: Priority
 delete:
     return: Return to to-do list
     success: Successfully deleted a task.
     warning: Task not found.
 all:
+    language: Successfully changed language to English.
     title:
         header: To-do list
         title: Title
