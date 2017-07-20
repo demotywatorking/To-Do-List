@@ -46,3 +46,10 @@ all:
     done: Done
     notask: No tasks created
     new: Add new task now
+index:
+    title: To-Do List
+    or: or
+    list: List of tasks
+    add: Add Task
+    start: Hello. You are logged in.
+    notlogged: Hello. Quick start:

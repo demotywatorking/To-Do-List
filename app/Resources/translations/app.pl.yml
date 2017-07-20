@@ -46,3 +46,10 @@ all:
     done: Zrobione
     notask: Nie utworzono żadnych zadań
     new: Utwórz nowe zadanie teraz
+index:
+    title: Lista zadań do zrobienia
+    or: albo
+    list: Lista zadań
+    add: Dodaj zadanie
+    start: Witaj. Jesteś zalogowany.
+    notlogged: Witaj. Szybki start:

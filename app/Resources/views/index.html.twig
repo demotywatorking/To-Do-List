@@ -1,0 +1,25 @@
+{% extends '::base.html.twig' %}
+{% trans_default_domain "app" %}
+{% block body %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1>{{ 'index.title'|trans() }}</h1>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <p>
+                    {{ 'index.start'|trans() }}<br />
+                    <a href="{{ path("all") }}" class="btn btn-info">{{ 'index.list'|trans() }}</a>
+                    {{ 'index.or'|trans() }}
+                    <a href="{{ path("add") }}" class="btn btn-info">{{ 'index.add'|trans() }}</a>
+                </p>
+
+            {% else %}
+                <p>
+                    {{ 'index.notlogged'|trans() }}<br />
+                    <a href="{{ path('fos_user_security_login') }}" class="btn btn-info">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    {{ 'index.or'|trans() }}
+                    <a href="{{ path('fos_user_registration_register') }}" class="btn btn-info">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

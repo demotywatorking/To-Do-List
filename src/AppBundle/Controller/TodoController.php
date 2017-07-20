@@ -9,7 +9,6 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Entity\Priority;
 use AppBundle\Entity\Todo;
 use AppBundle\Form\TodoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -120,7 +119,7 @@ class TodoController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($todo);
             $em->flush();
             $request->getSession()
@@ -207,9 +206,22 @@ class TodoController extends Controller
             ->getFlashBag()
             ->add('success', 'all.language')
         ;
-        return $this->redirectToRoute("all");
+        return $this->redirectToRoute("homepage");
     }
 
+    /**
+     * @Route("/", name="homepage")
+     */
+    public function indexAction(Request $request)
+    {
+        return $this->render('index.html.twig');
+    }
+
+    /**
+     * Method returns an array of prioritys to ChoiceType in user locale
+     * @param $locale
+     * @return array of priority in locale language
+     */
     private function addChoicesToForm($locale)
     {
         $priority = $this->getDoctrine()
@@ -225,33 +237,3 @@ class TodoController extends Controller
     }
 
 }
-/*
- * ALL WITHOUT TABLE
-{% if(todo.done) %}
-                            <div class="row bg-success margin-bottom">
-                        {% else %}
-                            <div class="row bg-warning margin-bottom">
-                        {% endif %}
-                            <div class="col-xs-2">
-                                {{ todo.title }}
-                            </div>
-                            <div class="col-xs-2">
-                                {{  todo.priority }}
-                            </div>
-                            <div class="col-xs-3">
-                                {{ todo.dueDate|date }}
-                            </div>
-                            <div class="col-xs-5">
-                                <div class="btn-group" role="group">
-                                    <a href="{{ path('details', {'id' : todo.id}) }}" class="btn btn-primary" type="button">Zobacz</a>
-                                    <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">Edytuj</a>
-                                    <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">Usuń</a>
-                                    {% if(todo.done == 0) %}
-                                        <a href="{{ path('done', {'id' : todo.id}) }}" class="btn btn-success" type="button">Oznacz jako wykonane</a>
-                                    {% else %}
-                                        <button class="btn btn-default" type="button">Zrobione</button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-*/
