@@ -9,13 +9,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TodoController extends Controller
 {
     /**
      * @Route("/todo", name="todo_all")
+     *
+     * Method shows user's all created to-do tasks
+     *
+     * @param Request $request A Request instance
+     *
+     * @return Response A Response instance
      */
-    public function allAction(Request $request)
+    public function allAction(Request $request): Response
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
@@ -55,7 +62,7 @@ class TodoController extends Controller
                 ->getFlashBag()
                 ->add('success', 'add.success')
             ;
-            return $this->redirectToRoute('details', [
+            return $this->redirectToRoute('todo_details', [
                 'id' => $task->getId()
             ]);
         }
@@ -116,7 +123,7 @@ class TodoController extends Controller
                 ->getFlashBag()
                 ->add('success', 'Z powodzeniem edytowano zadanie.')
             ;
-            return $this->redirectToRoute('details', [
+            return $this->redirectToRoute('todo_details', [
                 'id' => $id
             ]);
         }
