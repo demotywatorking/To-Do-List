@@ -19,9 +19,11 @@ class TodoController extends Controller
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
+
         $em = $this->getDoctrine()->getManager();
         $todos = $em->getRepository('AppBundle:Todo')
                     ->findAllByUserIdWithLocalePriority($userId, $locale);
+
         return $this->render('all.html.twig',[
             'todos' => $todos
         ]);
