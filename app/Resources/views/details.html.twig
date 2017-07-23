@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 {% trans_default_domain 'app' %}
-{% block containter %}
+{% block container %}
     {% if app.session.flashBag.has('success') %}
         <div class="alert alert-success">
             {% for msg in app.session.flashBag.get('success') %}
@@ -22,10 +22,10 @@
                 </div>
                 <div class="panel-footer">
                     <div class="btn-group">
-                        <a href="{{ path('edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">{{ 'details.edit'|trans() }}</a>
-                        <a href="{{ path('delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">{{ 'details.delete'|trans() }}</a>
+                        <a href="{{ path('todo_edit', {'id' : todo.id}) }}" class="btn btn-info" type="button">{{ 'details.edit'|trans() }}</a>
+                        <a href="{{ path('todo_delete', {'id' : todo.id}) }}" class="btn btn-danger" type="button">{{ 'details.delete'|trans() }}</a>
                         {% if(todo.done == 0) %}
-                            <a href="{{ path('done', {'id' : todo.id}) }}" class="btn btn-success" type="button">{{ 'details.set'|trans() }}</a>
+                            <a href="{{ path('todo_done', {'id' : todo.id}) }}" class="btn btn-success" type="button">{{ 'details.set'|trans() }}</a>
                         {% else %}
                             <button class="btn btn-default" type="button">{{ 'details.done'|trans() }}</button>
                         {% endif %}

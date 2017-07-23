@@ -7,9 +7,9 @@
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 <p>
                     {{ 'index.start'|trans() }}<br />
-                    <a href="{{ path("all") }}" class="btn btn-info">{{ 'index.list'|trans() }}</a>
+                    <a href="{{ path("todo_all") }}" class="btn btn-info">{{ 'index.list'|trans() }}</a>
                     {{ 'index.or'|trans() }}
-                    <a href="{{ path("add") }}" class="btn btn-info">{{ 'index.add'|trans() }}</a>
+                    <a href="{{ path("todo_add") }}" class="btn btn-info">{{ 'index.add'|trans() }}</a>
                 </p>
 
             {% else %}

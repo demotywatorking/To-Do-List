@@ -14,5 +14,5 @@
             {% endfor %}
         </div>
     {% endif %}
-    <a href="{{ path("details", { 'id' : id}) }}" class="btn btn-info">{{  'done.return'|trans({}, 'app') }}</a>
+    <a href="{{ path("todo_details", { 'id' : id}) }}" class="btn btn-info">{{  'done.return'|trans({}, 'app') }}</a>
 {% endblock %}

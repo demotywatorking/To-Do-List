@@ -8,8 +8,8 @@
                 <span class="icon-bar"></span>
             </button>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <a class="navbar-brand" href="{{ path('all') }}">{{ 'navbar.list'|trans({}, 'app') }}</a>
-            <a class="navbar-brand" href="{{ path('add') }}">{{ 'navbar.add'|trans({}, 'app')  }}</a>
+            <a class="navbar-brand" href="{{ path('todo_all') }}">{{ 'navbar.list'|trans({}, 'app') }}</a>
+            <a class="navbar-brand" href="{{ path('todo_add') }}">{{ 'navbar.add'|trans({}, 'app')  }}</a>
             {% endif %}
         </div>
         <div id="navbar" class="collapse navbar-collapse">

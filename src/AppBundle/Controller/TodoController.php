@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class TodoController extends Controller
 {
     /**
-     * @Route("/todo", name="all")
+     * @Route("/todo", name="todo_all")
      */
     public function allAction(Request $request)
     {
@@ -21,20 +21,14 @@ class TodoController extends Controller
         $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $todos = $em->getRepository('AppBundle:Todo')
-            ->findBy(['UserId' => $userId], [
-                'priority' => "DESC",
-                'dueDate' => "DESC"
-        ]);
-        foreach ($todos as $todo) {
-            $todo->setPriority($todo->getPriorityDatabase()->{'getPriority'.$locale}());
-        }
+                    ->findAllByUserIdWithLocalePriority($userId, $locale);
         return $this->render('all.html.twig',[
             'todos' => $todos
         ]);
     }
 
     /**
-     * @Route("/todo/add", name="add")
+     * @Route("/todo/add", name="todo_add")
      */
     public function addAction(Request $request)
     {
@@ -71,7 +65,7 @@ class TodoController extends Controller
     }
 
     /**
-     * @Route("/todo/details/{id}", name="details")
+     * @Route("/todo/details/{id}", name="todo_details")
      */
     public function detailsAction($id, Request $request)
     {
@@ -80,7 +74,7 @@ class TodoController extends Controller
         $todo = $this->getDoctrine()
             ->getRepository('AppBundle:Todo')
             ->findOneBy([
-                'UserId' => $userId,
+                'userId' => $userId,
                 'id' => $id,
         ]);
         if (!$todo) {
@@ -95,7 +89,7 @@ class TodoController extends Controller
     }
 
     /**
-     * @Route("/todo/edit/{id}", name="edit")
+     * @Route("/todo/edit/{id}", name="todo_edit")
      *
      */
     public function editAction($id, Request $request)
@@ -105,7 +99,7 @@ class TodoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $todo = $em->getRepository('AppBundle:Todo')
             ->findOneBy([
-                'UserId' => $userId,
+                'userId' => $userId,
                 'id' => $id,
         ]);
         $form = $this->createForm(TodoType::class, $todo);
@@ -132,7 +126,7 @@ class TodoController extends Controller
     }
 
     /**
-     * @Route("/todo/delete/{id}", name="delete")
+     * @Route("/todo/delete/{id}", name="todo_delete")
      *
      */
     public function deleteAction($id, Request $request)
@@ -142,7 +136,7 @@ class TodoController extends Controller
         $toDelete = $em->getRepository('AppBundle:Todo')
                     ->findOneBy([
                         'id' => $id,
-                        'UserId' => $userId
+                        'userId' => $userId
         ]);
         if ($toDelete) {
             $em->remove($toDelete);
@@ -161,7 +155,7 @@ class TodoController extends Controller
     }
 
     /**
-     * @Route("/todo/done/{id}", name="done")
+     * @Route("/todo/done/{id}", name="todo_done")
      */
     public function doneAction($id, Request $request)
     {
@@ -170,7 +164,7 @@ class TodoController extends Controller
         $toDone = $em->getRepository('AppBundle:Todo')
             ->findOneBy([
                 'id' => $id,
-                'UserId' => $userId
+                'userId' => $userId
         ]);
         if ($toDone) {
             $toDone->setDone(1);
@@ -192,7 +186,7 @@ class TodoController extends Controller
     }
 
     /**
-     * @Route("/todo/setlang/{_locale}", requirements={"_locale" = "en|pl"}, name="setlang")
+     * @Route("/setlang/{_locale}", requirements={"_locale" = "en|pl"}, name="setlang")
      */
     public function setLangAction(Request $request)
     {
@@ -201,14 +195,6 @@ class TodoController extends Controller
             ->add('success', 'all.language')
         ;
         return $this->redirectToRoute("homepage");
-    }
-
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction(Request $request)
-    {
-        return $this->render('index.html.twig');
     }
 
     /**
@@ -231,3 +217,4 @@ class TodoController extends Controller
     }
 
 }
+?>
