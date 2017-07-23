@@ -40,7 +40,7 @@ class Todo
      * @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $UserId;
+    private $userId;
 
     /**
      * @var string
@@ -189,7 +189,7 @@ class Todo
      */
     public function setUserId($userId)
     {
-        $this->UserId = $userId;
+        $this->userId = $userId;
 
         return $this;
     }
@@ -201,7 +201,7 @@ class Todo
      */
     public function getUserId()
     {
-        return $this->UserId;
+        return $this->userId;
     }
 
     /**

@@ -1,5 +1,5 @@
 {% extends "::base.html.twig" %}
-{% block body %}
+{% block container %}
     {% if app.session.flashBag.has('success') %}
         <div class="alert alert-success">
             {% for msg in app.session.flashBag.get('success') %}

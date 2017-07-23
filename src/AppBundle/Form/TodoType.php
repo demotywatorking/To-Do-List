@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: demot
- * Date: 09.07.2017
- * Time: 16:17
- */
 
 namespace AppBundle\Form;
-
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
