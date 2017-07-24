@@ -26,9 +26,12 @@ class TodoRepository extends \Doctrine\ORM\EntityRepository
         return $todos;
     }
 
-    public function findByTodoIdAndUserId(int $userId, int $todoId)
+    public function findByTodoIdAndUserId(int $id, int $userId)
     {
-        
+        return $this->findOneBy([
+            'userId' => $userId,
+            'id' => $id,
+        ]);
     }
 }
 ?>

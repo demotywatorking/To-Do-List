@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 class TodoController extends Controller
 {
@@ -75,25 +76,33 @@ class TodoController extends Controller
 
     /**
      * @Route("/todo/details/{id}", name="todo_details")
+     *
+     * Method shows details about task
+     *
+     * @param int $id Id of task
+     * @param Request $request A Request instance
+     *
+     * @throws NotFoundHttpException When task is not found in database
+     *
+     * @return Response A Response instance
      */
-    public function detailsAction($id, Request $request)
+    public function detailsAction(int $id, Request $request): Response
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
-        $todo = $this->getDoctrine()
-            ->getRepository('AppBundle:Todo')
-            ->findOneBy([
-                'userId' => $userId,
-                'id' => $id,
-        ]);
+
+        $em = $this->getDoctrine()->getManager();
+        $todo = $em->getRepository('AppBundle:Todo')
+                ->findByTodoIdAndUserId($id, $userId);
+        $priority = $todo->getPriorityDatabase()->{'getPriority'.$locale}();
+
         if (!$todo) {
-            return $this->render('details.html.twig', [
-                'todo' => ''
-            ]);
+            throw $this->createNotFoundException('Task not Found');
         }
+
         return $this->render('details.html.twig', [
             'todo' => $todo,
-            'priority' => $todo->getPriorityDatabase()->{'getPriority'.$locale}()
+            'priority' => $priority
         ]);
     }
 
@@ -204,25 +213,6 @@ class TodoController extends Controller
             ->add('success', 'all.language')
         ;
         return $this->redirectToRoute("homepage");
-    }
-
-    /**
-     * Method returns an array of prioritys to ChoiceType in user locale
-     * @param $locale
-     * @return array of priority in locale language
-     */
-    private function addChoicesToForm($locale)
-    {
-        $priority = $this->getDoctrine()
-            ->getRepository('AppBundle:Priority')
-            ->findBy([], [
-                'priorityId' => 'ASC'
-            ]);
-        $return = [];
-        foreach ($priority as $value) {
-            $return[$value->{'getPriority'.$locale}()] = $value->getPriorityId();
-        }
-        return $return;
     }
 
 }
