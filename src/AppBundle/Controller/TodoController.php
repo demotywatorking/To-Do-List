@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 class TodoController extends Controller
 {
@@ -79,7 +78,7 @@ class TodoController extends Controller
      *
      * Method shows details about task
      *
-     * @param int $id Id of task
+     * @param int $id Task's Id
      * @param Request $request A Request instance
      *
      * @throws NotFoundHttpException When task is not found in database
@@ -146,29 +145,28 @@ class TodoController extends Controller
     /**
      * @Route("/todo/delete/{id}", name="todo_delete")
      *
+     * Method delete task from database if task exists and was created by current user
+     *
+     * @param int $id Task's Id
+     *
+     * @return Response A Response instance
      */
-    public function deleteAction($id, Request $request)
+    public function deleteAction(int $id): Response
     {
         $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
+
         $toDelete = $em->getRepository('AppBundle:Todo')
-                    ->findOneBy([
-                        'id' => $id,
-                        'userId' => $userId
-        ]);
+                   ->findByTodoIdAndUserId($id, $userId);
+
         if ($toDelete) {
             $em->remove($toDelete);
             $em->flush();
-            $request->getSession()
-                ->getFlashBag()
-                ->add('success', 'delete.success')
-            ;
+            $this->addFlash('success', 'delete.success');
         } else {
-            $request->getSession()
-                ->getFlashBag()
-                ->add('warning', 'delete.warning')
-            ;
+            $this->addFlash('warning', 'delete.warning');
         }
+
         return $this->render('delete.html.twig');
     }
 
