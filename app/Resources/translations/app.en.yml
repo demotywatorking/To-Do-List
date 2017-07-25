@@ -19,6 +19,8 @@ add:
     edit: Edit
     cancel: Cancel
     success: Successfully created a task.
+edit:
+    success: Succesfully edited a task.
 details:
     details: Details
     due: Due Date

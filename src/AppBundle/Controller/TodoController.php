@@ -27,8 +27,8 @@ class TodoController extends Controller
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
-
         $em = $this->getDoctrine()->getManager();
+
         $todos = $em->getRepository('AppBundle:Todo')
                     ->findAllByUserIdWithLocalePriority($userId, $locale);
 
@@ -59,9 +59,7 @@ class TodoController extends Controller
             $em->getRepository('AppBundle:Todo');
             $em->persist($task);
             $em->flush();
-            $request->getSession()
-                ->getFlashBag()
-                ->add('success', 'add.success')
+            $this->addFlash('success', 'add.success')
             ;
             return $this->redirectToRoute('todo_details', [
                 'id' => $task->getId()
@@ -90,8 +88,8 @@ class TodoController extends Controller
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
-
         $em = $this->getDoctrine()->getManager();
+
         $todo = $em->getRepository('AppBundle:Todo')
                 ->findByTodoIdAndUserId($id, $userId);
         $priority = $todo->getPriorityDatabase()->{'getPriority'.$locale}();
@@ -109,29 +107,28 @@ class TodoController extends Controller
     /**
      * @Route("/todo/edit/{id}", name="todo_edit")
      *
+     * Method to edit task if task exists and was created by current user
+     *
+     * @param int $id Task's Id
+     * @param Request $request A Request instance
+     *
+     * @return mixed Response instance or RedirectResponse instance
      */
-    public function editAction($id, Request $request)
+    public function editAction(int $id, Request $request)
     {
-        $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
+
         $todo = $em->getRepository('AppBundle:Todo')
-            ->findOneBy([
-                'userId' => $userId,
-                'id' => $id,
-        ]);
+                ->findByTodoIdAndUserId($id, $userId);
+
         $form = $this->createForm(TodoType::class, $todo);
-        $form->add('priority', ChoiceType::class, [ 'choices' => $this->addChoicesToForm($locale) ]);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($todo);
             $em->flush();
-            $request->getSession()
-                ->getFlashBag()
-                ->add('success', 'Z powodzeniem edytowano zadanie.')
-            ;
+            $this->addFlash('success', 'edit.success');
             return $this->redirectToRoute('todo_details', [
                 'id' => $id
             ]);

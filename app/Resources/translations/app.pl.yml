@@ -19,6 +19,8 @@ add:
     edit: Edytuj
     cancel: Anuluj
     success: Z powodzeniem utworzono zadanie.
+edit:
+    success: Z powodzeniem edytowano zadanie.
 details:
     details: Szczegóły
     due: Data wykonania
