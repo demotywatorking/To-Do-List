@@ -39,28 +39,33 @@ class TodoController extends Controller
 
     /**
      * @Route("/todo/add", name="todo_add")
+     *
+     * @param Request $request A Request instance
+     *
+     * @return RedirectResponse|Response Redirect when task is succesfully added to database,
+     * rendering template when task is not subbmitted or not valid
      */
     public function addAction(Request $request)
     {
-        $locale = $request->getLocale();
         $task = new Todo();
         $task->setUserId($this->getUser()->getId());
         $task->setDone(0);
-        $form = $this->createForm(TodoType::class, $task);
-        $form->add('priority', ChoiceType::class, [ 'choices' => $this->addChoicesToForm($locale) ]);
 
+        $form = $this->createForm(TodoType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $priority = $em->getRepository('AppBundle:Priority')
-                        ->findOneBy(['priorityId' => $task->getPriority()]);
+                        ->findOneByPriorityId($task->getPriority());
             $task->setPriorityDatabase($priority);
+
             $em->getRepository('AppBundle:Todo');
             $em->persist($task);
             $em->flush();
-            $this->addFlash('success', 'add.success')
-            ;
+
+            $this->addFlash('success', 'add.success');
             return $this->redirectToRoute('todo_details', [
                 'id' => $task->getId()
             ]);
@@ -123,8 +128,7 @@ class TodoController extends Controller
                 ->findByTodoIdAndUserId($id, $userId);
         if (!$todo) {
             $this->addFlash('success','all.notfound');
-            return $this->redirectToRoute('todo_all', [
-            ]);
+            return $this->redirectToRoute('todo_all');
         }
 
         $form = $this->createForm(TodoType::class, $todo);

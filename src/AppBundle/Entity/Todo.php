@@ -56,8 +56,12 @@ class Todo
     /**
      * @var string
      * @ORM\Column(name="priority", type="integer")
+     * @Assert\Range(
+     *     min = 1,
+     *     max = 4
+     * )
      * @Assert\NotBlank(
-     * message = "Musi być ustawiony priorytet zadania"
+     *     message = "Musi być ustawiony priorytet zadania"
      * )
      *
      */

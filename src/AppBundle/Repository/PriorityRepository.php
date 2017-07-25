@@ -27,5 +27,19 @@ class PriorityRepository extends \Doctrine\ORM\EntityRepository
         }
         return $return;
     }
+
+    /**
+     * Method to find one object from priority table in database by id
+     *
+     * @param int $id Priority's Id in database
+     *
+     * @return null|object Return Priority object if find in database
+     */
+    public function findOneByPriorityId(int $id)
+    {
+        return $this->findOneBy([
+            'priorityId' => $id
+        ]);
+    }
 }
 ?>

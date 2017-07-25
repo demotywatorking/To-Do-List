@@ -32,7 +32,7 @@ class IndexController extends Controller
     public function setLangAction(): RedirectResponse
     {
         $this->addFlash('success', 'all.language');
-        return $this->redirectToRoute("homepage");
+        return $this->redirectToRoute("todo_all");
     }
 }
 ?>

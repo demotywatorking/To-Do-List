@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class TodoType extends AbstractType
 {
@@ -23,9 +23,9 @@ class TodoType extends AbstractType
      * TodoType constructor.
      *
      * @param EntityManagerInterface $em
-     * @param Session $session
+     * @param SessionInterface $session
      */
-    public function __construct(EntityManagerInterface $em, Session $session)
+    public function __construct(EntityManagerInterface $em, SessionInterface $session)
     {
         $this->em = $em;
         $this->session = $session;
