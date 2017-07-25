@@ -33,5 +33,5 @@ services:
         tags:
             - { name: twig.extension }
     AppBundle\Form\TaskType:
-        arguments: ['@doctrine.orm.entity_manager', '@session']
+        arguments: ['@doctrine.orm.entity_manager', '@request_stack']
         tags: [form.type]

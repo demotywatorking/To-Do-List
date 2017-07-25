@@ -4,9 +4,9 @@ namespace AppBundle\Form;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class TodoType extends AbstractType
 {
@@ -14,23 +14,18 @@ class TodoType extends AbstractType
      * @var EntityManagerInterface
      */
     private $em;
-    /**
-     * @var Session
-     */
-    private $session;
+    private $request;
 
     /**
      * TodoType constructor.
      *
      * @param EntityManagerInterface $em
-     * @param SessionInterface $session
      */
-    public function __construct(EntityManagerInterface $em, SessionInterface $session)
+    public function __construct(EntityManagerInterface $em, RequestStack $request)
     {
         $this->em = $em;
-        $this->session = $session;
+        $this->request = $request->getCurrentRequest();
     }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -55,9 +50,8 @@ class TodoType extends AbstractType
      */
     private function addChoicesInUserLocale(): array
     {
-        $locale = $this->session->get('_locale');
         return $this->em->getRepository('AppBundle:Priority')
-                ->getPrioritysInUserLocaleToForm($locale);
+                ->getPrioritysInUserLocaleToForm($this->request->getLocale());
     }
 
 }
