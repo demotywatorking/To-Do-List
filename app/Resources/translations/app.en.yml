@@ -48,6 +48,7 @@ all:
     done: Done
     notask: No tasks created
     new: Add new task now
+    notfound: Task not found.
 index:
     title: To-Do List
     or: or

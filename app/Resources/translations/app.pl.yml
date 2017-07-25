@@ -48,6 +48,7 @@ all:
     done: Zrobione
     notask: Nie utworzono żadnych zadań
     new: Utwórz nowe zadanie teraz
+    notfound: Zadanie nie znalezione
 index:
     title: Lista zadań do zrobienia
     or: albo

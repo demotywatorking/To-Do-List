@@ -121,6 +121,11 @@ class TodoController extends Controller
 
         $todo = $em->getRepository('AppBundle:Todo')
                 ->findByTodoIdAndUserId($id, $userId);
+        if (!$todo) {
+            $this->addFlash('success','all.notfound');
+            return $this->redirectToRoute('todo_all', [
+            ]);
+        }
 
         $form = $this->createForm(TodoType::class, $todo);
 
