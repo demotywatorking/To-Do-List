@@ -8,6 +8,7 @@ use AppBundle\Form\TodoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -172,45 +173,33 @@ class TodoController extends Controller
 
     /**
      * @Route("/todo/done/{id}", name="todo_done")
+     *
+     * Method sets task as done if task exists and was created by current user
+     *
+     * @param int $id Task's Id
+     *
+     * @return Response A Response instance
      */
-    public function doneAction($id, Request $request)
+    public function doneAction(int $id): Response
     {
         $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
+
         $toDone = $em->getRepository('AppBundle:Todo')
-            ->findOneBy([
-                'id' => $id,
-                'userId' => $userId
-        ]);
+            ->findByTodoIdAndUserId($id, $userId);
+
         if ($toDone) {
             $toDone->setDone(1);
             $em->persist($toDone);
             $em->flush();
-            $request->getSession()
-                ->getFlashBag()
-                ->add('success', 'done.success')
-            ;
+            $this->addFlash('success', 'done.success');
         } else {
-            $request->getSession()
-                ->getFlashBag()
-                ->add('warning', 'done.warning')
-            ;
+            $this->addFlash('warning', 'done.warning');
         }
+
         return $this->render('done.html.twig', [
             'id' => $id
         ]);
-    }
-
-    /**
-     * @Route("/setlang/{_locale}", requirements={"_locale" = "en|pl"}, name="setlang")
-     */
-    public function setLangAction(Request $request)
-    {
-        $request->getSession()
-            ->getFlashBag()
-            ->add('success', 'all.language')
-        ;
-        return $this->redirectToRoute("homepage");
     }
 
 }
