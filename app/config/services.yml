@@ -32,6 +32,6 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
-    AppBundle\Form\TaskType:
-        arguments: ['@doctrine.orm.entity_manager', '@request_stack']
+    AppBundle\Form\TodoType:
+        arguments: ['@doctrine.orm.entity_manager']
         tags: [form.type]

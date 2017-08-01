@@ -50,7 +50,7 @@ class TodoController extends Controller
         $task->setUserId($this->getUser()->getId());
         $task->setDone(0);
 
-        $form = $this->createForm(TodoType::class, $task);
+        $form = $this->createForm(TodoType::class, $task, ['locale' => $request->getLocale()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -96,11 +96,12 @@ class TodoController extends Controller
 
         $todo = $em->getRepository('AppBundle:Todo')
                 ->findByTodoIdAndUserId($id, $userId);
-        $priority = $todo->getPriorityDatabase()->{'getPriority'.$locale}();
 
         if (!$todo) {
             throw $this->createNotFoundException('Task not Found');
         }
+
+        $priority = $todo->getPriorityDatabase()->{'getPriority'.$locale}();
 
         return $this->render('details.html.twig', [
             'todo' => $todo,
@@ -130,8 +131,7 @@ class TodoController extends Controller
             return $this->redirectToRoute('todo_all');
         }
 
-        $form = $this->createForm(TodoType::class, $todo);
-
+        $form = $this->createForm(TodoType::class, $todo, ['locale' => $request->getLocale()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($todo);

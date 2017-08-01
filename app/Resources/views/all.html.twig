@@ -9,9 +9,7 @@
         </div>
     {% endif %}
     <div class="panel panel-success">
-        <div class="panel-heading">
-            {{ 'all.title.header'|trans() }}
-        </div>
+        <div class="panel-heading">{{ 'all.title.header'|trans() }}</div>
         <div class="panel-body">
             <div class="container-fluid">
                 {% if todos %}
@@ -28,9 +26,9 @@
                             <tbody>
                         {% for todo in todos %}
                             {% if(todo.done) %}
-                                <tr class="bg-success">
+                                <tr class="bg-success task">
                             {% else %}
-                                <tr class="bg-warning">
+                                <tr class="bg-warning task">
                             {% endif %}
                                     <td>{{ todo.title }}</td>
                                     <td>{{ todo.priority }}</td>
