@@ -26,10 +26,9 @@ class TodoController extends Controller
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
-        $em = $this->getDoctrine()->getManager();
 
-        $todos = $em->getRepository('AppBundle:Todo')
-                    ->findAllByUserIdWithLocalePriority($userId, $locale);
+        $todoService = $this->get('app.todo');
+        $todos = $todoService->getAllTodos($userId, $locale);
 
         return $this->render('all.html.twig',[
             'todos' => $todos
@@ -54,15 +53,8 @@ class TodoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $priority = $em->getRepository('AppBundle:Priority')
-                        ->findOneByPriorityId($task->getPriority());
-            $task->setPriorityDatabase($priority);
-
-            $em->getRepository('AppBundle:Todo');
-            $em->persist($task);
-            $em->flush();
+            $todoService = $this->get('app.todo');
+            $todoService->addTodo($task);
 
             $this->addFlash('success', 'add.success');
             return $this->redirectToRoute('todo_details', [
@@ -92,10 +84,9 @@ class TodoController extends Controller
     {
         $locale = $request->getLocale();
         $userId = $this->getUser()->getId();
-        $em = $this->getDoctrine()->getManager();
 
-        $todo = $em->getRepository('AppBundle:Todo')
-                ->findByTodoIdAndUserId($id, $userId);
+        $todoService = $this->get('app.todo');
+        $todo = $todoService->detailsTodo($id, $userId);
 
         if (!$todo) {
             throw $this->createNotFoundException('Task not Found');
@@ -122,10 +113,10 @@ class TodoController extends Controller
     public function editAction(int $id, Request $request)
     {
         $userId = $this->getUser()->getId();
-        $em = $this->getDoctrine()->getManager();
 
-        $todo = $em->getRepository('AppBundle:Todo')
-                ->findByTodoIdAndUserId($id, $userId);
+        $todoService = $this->get('app.todo');
+        $todo = $todoService->detailsTodo($id, $userId);
+
         if (!$todo) {
             $this->addFlash('success','all.notfound');
             return $this->redirectToRoute('todo_all');
@@ -134,8 +125,8 @@ class TodoController extends Controller
         $form = $this->createForm(TodoType::class, $todo, ['locale' => $request->getLocale()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($todo);
-            $em->flush();
+            $todoService->editTodo($todo);
+
             $this->addFlash('success', 'edit.success');
             return $this->redirectToRoute('todo_details', [
                 'id' => $id
@@ -160,14 +151,13 @@ class TodoController extends Controller
     public function deleteAction(int $id): Response
     {
         $userId = $this->getUser()->getId();
-        $em = $this->getDoctrine()->getManager();
 
-        $toDelete = $em->getRepository('AppBundle:Todo')
-                   ->findByTodoIdAndUserId($id, $userId);
+        $todoService = $this->get('app.todo');
+        $toDelete = $todoService->detailsTodo($id, $userId);
 
         if ($toDelete) {
-            $em->remove($toDelete);
-            $em->flush();
+            $todoService->deleteTodo($toDelete);
+
             $this->addFlash('success', 'delete.success');
         } else {
             $this->addFlash('warning', 'delete.warning');
@@ -188,15 +178,13 @@ class TodoController extends Controller
     public function doneAction(int $id): Response
     {
         $userId = $this->getUser()->getId();
-        $em = $this->getDoctrine()->getManager();
 
-        $toDone = $em->getRepository('AppBundle:Todo')
-            ->findByTodoIdAndUserId($id, $userId);
+        $todoService = $this->get('app.todo');
+        $toDone = $todoService->detailsTodo($id, $userId);
 
         if ($toDone) {
-            $toDone->setDone(1);
-            $em->persist($toDone);
-            $em->flush();
+            $todoService->doneTodo($toDone);
+
             $this->addFlash('success', 'done.success');
         } else {
             $this->addFlash('warning', 'done.warning');

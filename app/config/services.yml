@@ -35,3 +35,7 @@ services:
     AppBundle\Form\TodoType:
         arguments: ['@doctrine.orm.entity_manager']
         tags: [form.type]
+    app.todo:
+        public: true
+        class: AppBundle\Utils\Todo
+        arguments: ['@doctrine.orm.entity_manager']
